@@ -1,0 +1,17 @@
+default: &default
+  adapter: postgresql
+  encoding: unicode
+  pool: <%= ENV.fetch("RAILS_MAX_THREADS") { 5 } %>
+  host: localhost
+  port: 5432
+  username: test
+  password: test123
+
+development:
+  <<: *default
+  database: basket_api
+
+test:
+  <<: *default
+  database: basket_api_test
+
