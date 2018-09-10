@@ -9,9 +9,9 @@ default: &default
 
 development:
   <<: *default
-  database: basket_api
+  database: cart_api
 
 test:
   <<: *default
-  database: basket_api_test
+  database: cart_api_test
 
