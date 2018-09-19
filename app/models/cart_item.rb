@@ -12,10 +12,20 @@ class CartItem
                             only_integer: true,
                             greater_than_or_equal_to: 1,
                             less_than_or_equal_to: 10
+  validate :product_exists
 
 
   def initialize(attributes = {})
     super
     @sum = 0
+  end
+
+
+  private
+
+  def product_exists
+    unless Product.exists?(product_id)
+      errors.add(:product_id, "doesn't exist")
+    end
   end
 end
