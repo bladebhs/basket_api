@@ -1,4 +1,8 @@
-# This file is copied to spec/ when you run 'rails generate rspec:install'
+require 'simplecov'
+require 'simplecov-console'
+SimpleCov.formatter = SimpleCov::Formatter::Console
+SimpleCov.start 'rails'
+
 require 'spec_helper'
 require 'database_cleaner'
 
