@@ -1,6 +1,24 @@
 require 'rails_helper'
 
-RSpec.describe 'Cart API', type: :request do
+shared_context 'a valid request' do
+  it 'returns status code 200' do
+    expect(response).to have_http_status(200)
+  end
+end
+
+shared_context 'an invalid request' do
+  it 'returns status code 400' do
+    expect(response).to have_http_status(400)
+  end
+
+  it 'returns an error' do
+    expect(json['error']).to include('params', 'type', 'message')
+    expect(json['error']['type']).to eq "invalid_param_error" 
+    expect(json['error']['message']).to eq "Invalid data parameters"
+  end
+end
+
+describe 'Cart API', type: :request do
   let(:cart) { Cart.instance }
   let!(:products) { create_list(:product, 2) }
 
@@ -11,7 +29,7 @@ RSpec.describe 'Cart API', type: :request do
 
     before { cart.add_product valid_item }
 
-    context 'when the request is valid' do
+    context 'with valid parameters' do
       context 'when the product is new' do
         before { post '/api/cart', params: other_valid_item }
 
@@ -32,23 +50,27 @@ RSpec.describe 'Cart API', type: :request do
         end
       end
 
-      it 'returns status code 200' do
-        expect(response).to have_http_status(200)
-      end
+      it_behaves_like 'a valid request'
     end
 
-    context 'when the request is invalid' do
+    context 'with invalid parameters' do
       before { post '/api/cart', params: invalid_item }
 
-      it 'returns status code 400' do
-        expect(response).to have_http_status(400)
-      end
+      it_behaves_like 'an invalid request'
+    end
+  end
 
-      it 'returns an error' do
-        expect(json['error']).to include('params', 'type', 'message')
-        expect(json['error']['type']).to eq "invalid_param_error" 
-        expect(json['error']['message']).to eq "Invalid data parameters"
-      end
+  describe 'DELETE /api/cart/:product_id' do
+    context 'with valid product_id' do
+      before { delete "/api/cart/#{products.first.id}" }
+
+      it_behaves_like 'a valid request'
+    end
+
+    context 'with invalid product_id' do
+      before { delete '/api/cart/90' }
+
+      it_behaves_like 'an invalid request'
     end
   end
 end
