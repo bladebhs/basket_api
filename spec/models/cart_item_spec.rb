@@ -1,7 +1,7 @@
 require 'rails_helper'
 
 RSpec.describe CartItem, type: :model do
-  subject { build(:cart_item) }
+  subject { CartItem.new(attributes_for(:cart_item)) }
 
   describe 'validation' do
     it { is_expected.to validate_presence_of(:product_id) }
@@ -15,11 +15,10 @@ RSpec.describe CartItem, type: :model do
     }
   end
 
-  context 'after validation' do
+  context 'with valid product_id' do
     it { is_expected.to be_valid }
 
     it 'calculates the sum' do
-      subject.valid?
       expect(subject.sum).to eq(Product.find(subject.product_id).price * subject.quantity)
     end
   end
@@ -28,6 +27,10 @@ RSpec.describe CartItem, type: :model do
     subject { build(:cart_item, product_id: 999) }
 
     it { is_expected.to be_invalid }
+
+    it 'sets sum to 0' do
+      expect(subject.sum).to eq 0
+    end
 
     it 'has an error' do
       subject.valid?
