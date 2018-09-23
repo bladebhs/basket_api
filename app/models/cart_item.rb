@@ -1,6 +1,5 @@
 class CartItem
   include ActiveModel::Model
-  include ActiveModel::Validations::Callbacks
 
   # Attributes
   attr_accessor :product_id, :quantity
@@ -15,12 +14,10 @@ class CartItem
                             less_than_or_equal_to: 10
   validate :product_exists
 
-  # Callbacks
-  after_validation :calculate_sum
 
   def initialize(attributes = {})
     super
-    @sum = 0
+    @sum = Product.find(@product_id).price * @quantity rescue 0
   end
 
 
@@ -30,10 +27,5 @@ class CartItem
     unless Product.exists?(product_id)
       errors.add(:product_id, "doesn't exist")
     end
-  end
-
-  def calculate_sum
-    return unless errors.empty?
-    @sum = Product.find(product_id).price * quantity
   end
 end
