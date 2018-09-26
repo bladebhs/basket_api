@@ -17,6 +17,10 @@ class CartItem
 
   def initialize(attributes = {})
     super
+    calculate_sum
+  end
+
+  def calculate_sum
     @sum = Product.find(@product_id).price * @quantity rescue 0
   end
 
