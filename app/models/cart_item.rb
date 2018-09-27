@@ -24,6 +24,14 @@ class CartItem
     @sum = Product.find(@product_id).price * @quantity rescue 0
   end
 
+  def as_json(options = nil)
+    {
+      id: product_id,
+      quantity: quantity,
+      sum: sum
+    }
+  end
+
 
   private
 
