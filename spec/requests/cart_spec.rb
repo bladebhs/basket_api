@@ -20,9 +20,6 @@ end
 
 describe 'Cart API', type: :request do
   let(:cart) { Cart.instance }
-  #let!(:products) { create_list(:product, 2) }
-  #let(:valid_item) { { product_id: products.first.id, quantity: 2 } }
-  #let(:invalid_item) { { product_id: products.first.id, quantity: 20 } }
   let(:valid_item) { attributes_for(:cart_item) }
   let(:invalid_item) { attributes_for(:cart_item, quantity: 20) }
 
