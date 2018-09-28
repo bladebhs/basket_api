@@ -18,6 +18,8 @@ class Cart
   def remove_product(product_id)
     found_item = cart_items.detect { |item| item.product_id == product_id }
 
+    return unless found_item
+
     if found_item.quantity > 1
       found_item.quantity -= 1
       found_item.calculate_sum
