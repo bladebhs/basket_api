@@ -16,12 +16,13 @@ class CartItem
 
 
   def initialize(attributes = {})
-    super
+    @product_id = attributes[:product_id].to_i
+    @quantity = attributes[:quantity].to_i
     calculate_sum
   end
 
   def calculate_sum
-    @sum = Product.find(@product_id).price * @quantity rescue 0
+    @sum = Product.find(product_id).price * quantity rescue 0
   end
 
   def as_json(options = nil)
