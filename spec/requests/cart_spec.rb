@@ -39,7 +39,7 @@ describe 'Cart API', type: :request do
 
   describe 'DELETE /api/cart/:product_id' do
     context 'with valid product_id' do
-      before { delete "/api/cart/#{products.first.id}" }
+      before { delete "/api/cart/#{valid_item[:product_id]}" }
 
       it_behaves_like 'a valid request'
     end
