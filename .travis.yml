@@ -33,3 +33,6 @@ deploy:
   app: rails-cart-api
   on:
     repo: bladebhs/cart_api
+  run:
+    - "rake db:migrate"
+    - "rake db:seed"
