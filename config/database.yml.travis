@@ -1,2 +1,6 @@
+test:
+  adapter: postgresql
+  database: cart_api_test
+
 production:
   url: <%= ENV['DATABASE_URL'] %>
