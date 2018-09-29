@@ -1,0 +1,33 @@
+language: 
+  ruby
+
+rvm:
+  - 2.5.1
+
+env:
+  global:
+    - CC_TEST_REPORTER_ID=$CCKEY
+
+cache:
+  bundler
+
+before_script:
+  - cp config/database.yml.travis config/database.yml
+  - bundle exec rails db:setup
+  - curl -L https://codeclimate.com/downloads/test-reporter/test-reporter-latest-linux-amd64 > ./cc-test-reporter
+  - chmod +x ./cc-test-reporter
+  - ./cc-test-reporter before-build
+
+script:
+  - bundle exec rspec
+
+after_script:
+  - ./cc-test-reporter after-build --exit-code $TRAVIS_TEST_RESULT
+
+deploy:
+  provider: heroku
+  api_key:
+    secure: "hw9dotrfrQiAyfu0btRSZNGNcFYG6hXBKWBTF6uz7BTOHeNxsxzQm4cZ6rZJta2tV8Q/zbXC/vH30L1cW8IhxN4+X7fXtYf80QLx1EhxXtx8zxRH1Nahs2WS3jhbK1NCOoY+CHV0/lM5idH5D3XX9jDRmTktqz7kN2CfL87f/foTkBxsMcIB9HQW/SMJCGmI6dH0Oga7JPIts0hRcWGRySTVYrHx1rVHH1dkpxAnVluQK73eaHCqgSTB9k9TXIDiYc6iGrTX2pFt6CFzAhkXLp3pTtG0sdbfaxrJ8LeIFZCrzjc6ljkZ5qtsdhCwWyEqshn+8ANENccPLLTxUo+UngqXLnY59a/0KAPuj6WzQ/FXw3Qe5LM8hrSF56CnALzDEwErXSGgXCuxGaoGyuhPMX8UUxoPJSpxa9BJE+s6UTVVDbfqYifryWioJf0lDJyu9Scyq7SStMOv2TxQAfUGmywvpIl8KKQmZPB9eDQ7nQ5o5UxiqXWZ9kh/ZQQHa8sLXvq/wLH7qasnMclQ7lxBnHr/nP5B+99IyWQ5/Ecs8A8ZmpRsqJJHG/HwZz5Hp4vdy6kpHhQJbUVuRpFk8i7db85RQCMwbD8XS0mXXqFmY2NwmxijVAM7fgegtxwv4UHYNimKar51QHd94MZi90YbxkIOzUAS0A/kE0TH/Fl+O1I="
+  app: rails-cart-api
+  on:
+    repo: bladebhs/cart_api
