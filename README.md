@@ -17,3 +17,11 @@ Simple Shopping Cart API
 * Install Bundler `gem install bundler`
 * Copy `config/database.yml.example` to `config/database.yml` and configure the database
 * Run `./bin/setup`
+
+## How to use
+
+The simpliest way is to use [http](https://httpie.org/) command.
+
+``` bash
+http POST https://rails-cart-api.herokuapp.com/api/cart product_id=1 quantity=5
+```
